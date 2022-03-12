@@ -1,0 +1,158 @@
+C51 COMPILER V9.01   RTC_DS3231                                                            10/29/2020 09:42:11 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE RTC_DS3231
+OBJECT MODULE PLACED IN .\RTC_DS3231.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTT\RTC_DS3231.c BROWSE DEBUG OBJECTEXTEND PRINT(.\RTC_DS3231.lst) OBJ
+                    -ECT(.\RTC_DS3231.obj)
+
+line level    source
+
+   1          #include"Main.h"
+   2          #include"port.h"
+   3          #include"I2C.h"
+   4          #include"RTC_DS3231.h"
+   5          #include "..\libTT\delay.h"
+   6          
+   7          #define DS3231_WriteMode 0xD0  
+   8          #define DS3231_ReadMode 0xD1
+   9                    
+  10          #define SEC_ADD   0x00
+  11          #define DATE_ADD  0x04 
+  12          #define CONTROL 0x07       
+  13          
+  14          void Ds3231_Init()        
+  15          {
+  16   1              I2c_Init();
+  17   1              I2c_Start();
+  18   1      
+  19   1              I2c_Write(DS3231_WriteMode);
+  20   1              I2c_Write(CONTROL);
+  21   1      
+  22   1              I2c_Write(SEC_ADD);
+  23   1                                                              
+  24   1              I2c_Stop();
+  25   1      }
+  26          
+  27          void Ds3231_Write(unsigned char dat)
+  28          {
+  29   1              I2c_Write(dat);
+  30   1              delay(1);
+  31   1              I2C_SCL = 1;
+  32   1              delay(1);
+  33   1              I2C_SCL = 0;
+  34   1      }
+  35          
+  36          unsigned char Ds3231_Read()
+  37          {
+  38   1          unsigned char dat;
+  39   1          dat = I2c_Read();   
+  40   1          return(dat);
+  41   1      }
+  42          
+  43          void Ds3231_Set_Time(unsigned char hh, unsigned char mm, unsigned char ss)
+  44          {
+  45   1              ss = ((ss/10)<<4)|(ss%10);
+  46   1              mm = ((mm/10)<<4)|(mm%10);
+  47   1              hh   = ((hh  /10)<<4)|(hh  %10);
+  48   1      
+  49   1              I2c_Start();
+  50   1              Ds3231_Write(DS3231_WriteMode);
+  51   1              Ds3231_Write(SEC_ADD);
+  52   1      
+  53   1              Ds3231_Write(ss);
+  54   1              Ds3231_Write(mm);
+C51 COMPILER V9.01   RTC_DS3231                                                            10/29/2020 09:42:11 PAGE 2   
+
+  55   1              Ds3231_Write(hh);
+  56   1      
+  57   1              I2c_Stop();
+  58   1      }
+  59          
+  60          void Ds3231_Set_Date(unsigned char yy, unsigned char mm, unsigned char dd)
+  61          {
+  62   1              dd      = ((dd/10)<<4)  | (dd%10);
+  63   1              mm      = ((mm/10)<<4) | (mm%10);
+  64   1              yy      = ((yy/10)<<4)  | (yy%10);
+  65   1      
+  66   1              I2c_Start();
+  67   1              Ds3231_Write(DS3231_WriteMode);
+  68   1              Ds3231_Write(DATE_ADD);
+  69   1      
+  70   1              Ds3231_Write(dd);
+  71   1              Ds3231_Write(mm);
+  72   1              Ds3231_Write(yy);
+  73   1      
+  74   1              I2c_Stop();
+  75   1      }
+  76          
+  77          void Ds3231_Read_Time(unsigned char * hour, unsigned char * minute, unsigned char * second)
+  78          {
+  79   1              //unsigned char h_tmp, m_tmp, s_tmp;    
+  80   1      
+  81   1              I2c_Start();
+  82   1      
+  83   1              I2c_Write(DS3231_WriteMode);
+  84   1              I2c_Write(SEC_ADD);
+  85   1      
+  86   1              I2c_Stop();
+  87   1      
+  88   1              I2c_Start();
+  89   1      
+  90   1              I2c_Write(DS3231_ReadMode);
+  91   1              *second = I2c_Read(); I2c_Ack();
+  92   1              *minute = I2c_Read();   I2c_Ack();
+  93   1              *hour = I2c_Read();     I2c_Nak();
+  94   1      
+  95   1              I2c_Stop();
+  96   1      
+  97   1      //      s_tmp &= 0x7F;
+  98   1      //      *second = (s_tmp>>4)*10+(s_tmp&0x0F);
+  99   1      //      m_tmp &= 0x7F;
+ 100   1      //      *minute = (m_tmp>>4)*10+(m_tmp&0x0F);
+ 101   1      //      h_tmp &= 0x3F;
+ 102   1      //      *hour = (h_tmp>>4)*10+(h_tmp&0x0F);
+ 103   1                                      
+ 104   1      }
+ 105          
+ 106          
+ 107          void Ds3231_Read_Date(unsigned char * date,unsigned char * month, unsigned char * year)
+ 108          {
+ 109   1              I2c_Start();
+ 110   1      
+ 111   1              I2c_Write(DS3231_WriteMode); 
+ 112   1              I2c_Write(DATE_ADD);
+ 113   1              
+ 114   1              I2c_Stop();
+ 115   1      
+ 116   1              I2c_Start(); 
+C51 COMPILER V9.01   RTC_DS3231                                                            10/29/2020 09:42:11 PAGE 3   
+
+ 117   1      
+ 118   1              I2c_Write(DS3231_ReadMode); 
+ 119   1              *date = I2c_Read();     I2c_Ack();
+ 120   1              *month= I2c_Read();     I2c_Ack();
+ 121   1              *year = I2c_Read();     I2c_Nak();
+ 122   1      
+ 123   1              I2c_Stop();
+ 124   1      //      *date &= 0x3F;
+ 125   1      //      *date = (*date>>4)*10 + (*date & 0x0F);
+ 126   1      //      *month &= 0x1F;
+ 127   1      //      *month = (*month>>4)*10 + (*month & 0x0F);
+ 128   1      //      *year = (*year>>4)*10 + (*year & 0x0F); 
+ 129   1      }
+ 130          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    412    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      24
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

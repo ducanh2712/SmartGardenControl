@@ -1,0 +1,7 @@
+"delay.obj",
+"ds1307.obj",
+"i2c.obj",
+"lcd.obj",
+"main.obj" 
+TO "3231" 
+RAMSIZE(256) 

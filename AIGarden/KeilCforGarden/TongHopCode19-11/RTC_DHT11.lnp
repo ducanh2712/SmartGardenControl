@@ -1,0 +1,5 @@
+"main.obj",
+".\Delay.obj",
+".\LCD8.obj" 
+TO "RTC_DHT11" 
+RAMSIZE(256) 

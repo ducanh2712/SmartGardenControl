@@ -1,0 +1,13 @@
+C51 COMPILER V9.01   DS1307                                                                11/24/2020 20:22:04 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DS1307
+OBJECT MODULE PLACED IN .\ds1307.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTest\ds1307.c BROWSE DEBUG OBJECTEXTEND PRINT(.\ds1307.lst) OBJECT(.\
+                    -ds1307.obj)
+
+line level    source
+
+*** ERROR C318 OF ..\LibTest\ds1307.c: can't open file '..\LibTest\ds1307.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

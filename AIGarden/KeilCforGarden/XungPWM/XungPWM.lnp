@@ -1,0 +1,5 @@
+"main.obj",
+".\Delay.obj",
+".\PWM.obj" 
+TO "XungPWM" 
+RAMSIZE(256) 

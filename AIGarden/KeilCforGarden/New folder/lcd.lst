@@ -1,0 +1,13 @@
+C51 COMPILER V9.01   LCD                                                                   11/24/2020 20:22:05 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN .\lcd.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTest\lcd.c BROWSE DEBUG OBJECTEXTEND PRINT(.\lcd.lst) OBJECT(.\lcd.ob
+                    -j)
+
+line level    source
+
+*** ERROR C318 OF ..\LibTest\lcd.c: can't open file '..\LibTest\lcd.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

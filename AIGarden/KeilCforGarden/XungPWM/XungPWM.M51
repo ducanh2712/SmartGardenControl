@@ -1,0 +1,283 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/30/2020  14:55:42  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE main.obj, .\Delay.obj, .\PWM.obj TO XungPWM RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  .\Delay.obj (DELAY)
+  .\PWM.obj (PWM)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?SIDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?IILDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LMUL)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?SLSHR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?IILDX)
+
+
+LINK MAP OF MODULE:  XungPWM (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000AH     UNIT         ?DT?PWM
+            DATA    0012H     0006H     UNIT         _DATA_GROUP_
+            IDATA   0018H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     UNIT         ?PR?PWM_START?PWM
+            CODE    0006H     0003H     UNIT         ?PR?PWM_END?PWM
+                    0009H     0002H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     020AH     UNIT         ?C?LIB_CODE
+            CODE    0218H     00A7H     UNIT         ?PR?_PWM_SET_DUTY?PWM
+            CODE    02BFH     008AH     UNIT         ?PR?_PWM_INIT?PWM
+            CODE    0349H     0032H     UNIT         ?PR?MAIN?MAIN
+            CODE    037BH     0020H     UNIT         ?PR?_DELAY?DELAY
+            CODE    039BH     001CH     UNIT         ?PR?_TANG_GIAM_DUTY?MAIN
+            CODE    03B7H     0013H     UNIT         ?PR?TIMEROVERFLOW?PWM
+            CODE    03CAH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   XungPWM (MAIN)
+
+
+SEGMENT                            DATA_GROUP 
+  +--> CALLED SEGMENT            START    LENGTH
+------------------------------------------------
+?C_C51STARTUP                    -----    -----
+  +--> ?PR?MAIN?MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/30/2020  14:55:42  PAGE 2
+
+
+
+?PR?MAIN?MAIN                    0012H    0005H
+  +--> ?PR?_PWM_INIT?PWM
+  +--> ?PR?_PWM_SET_DUTY?PWM
+  +--> ?PR?PWM_START?PWM
+  +--> ?PR?_TANG_GIAM_DUTY?MAIN
+
+?PR?_PWM_SET_DUTY?PWM            0017H    0001H
+
+
+
+SYMBOL TABLE OF MODULE:  XungPWM (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  B:0090H.3       PUBLIC        P1_3
+  B:0090H.4       PUBLIC        P1_4
+  C:0349H         PUBLIC        main
+  C:039BH         PUBLIC        _Tang_Giam_Duty
+  -------         PROC          _TANG_GIAM_DUTY
+  D:0001H         SYMBOL        duty2
+  C:039BH         LINE#         9
+  C:039BH         LINE#         10
+  C:039BH         LINE#         11
+  C:039EH         LINE#         12
+  C:039EH         LINE#         13
+  C:03A5H         LINE#         14
+  C:03A8H         LINE#         15
+  C:03A8H         LINE#         16
+  C:03ABH         LINE#         17
+  C:03ABH         LINE#         18
+  C:03B3H         LINE#         19
+  C:03B6H         LINE#         20
+  C:03B6H         LINE#         22
+  -------         ENDPROC       _TANG_GIAM_DUTY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0012H         SYMBOL        duty
+  D:0014H         SYMBOL        p
+  -------         ENDDO         
+  C:0349H         LINE#         23
+  C:0349H         LINE#         24
+  C:0349H         LINE#         25
+  C:034EH         LINE#         26
+  C:0356H         LINE#         28
+  C:035DH         LINE#         29
+  C:0362H         LINE#         30
+  C:0365H         LINE#         31
+  C:036BH         LINE#         32
+  C:036BH         LINE#         33
+  C:036BH         LINE#         34
+  C:0374H         LINE#         35
+  C:0379H         LINE#         36
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/30/2020  14:55:42  PAGE 3
+
+
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:037BH         PUBLIC        _delay
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        x
+  D:0002H         SYMBOL        y
+  -------         ENDDO         
+  C:037BH         LINE#         6
+  C:037BH         LINE#         7
+  C:037BH         LINE#         9
+  C:0385H         LINE#         10
+  C:0385H         LINE#         11
+  C:0393H         LINE#         12
+  C:039AH         LINE#         13
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        DELAY
+
+  -------         MODULE        PWM
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  B:00A8H.7       PUBLIC        EA
+  C:0218H         PUBLIC        _PWM_Set_Duty
+  D:0008H         PUBLIC        Toff
+  D:000AH         PUBLIC        Ton
+  D:000CH         PUBLIC        Toff_h_reload
+  D:0089H         PUBLIC        TMOD
+  D:000DH         PUBLIC        Toff_l_reload
+  B:0080H.4       PUBLIC        PWM_PIN
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  D:000EH         PUBLIC        T
+  D:0010H         PUBLIC        Ton_h_reload
+  B:0088H.4       PUBLIC        TR0
+  D:0011H         PUBLIC        Ton_l_reload
+  C:03B7H         PUBLIC        TimerOverflow
+  C:0003H         PUBLIC        PWM_Start
+  C:02BFH         PUBLIC        _PWM_Init
+  C:0006H         PUBLIC        PWM_End
+  -------         PROC          _PWM_INIT
+  D:0006H         SYMBOL        ck
+  C:02BFH         LINE#         8
+  C:02BFH         LINE#         9
+  C:02BFH         LINE#         10
+  C:02C1H         LINE#         12
+  C:02C4H         LINE#         13
+  C:02C7H         LINE#         15
+  C:02C9H         LINE#         16
+  C:02CBH         LINE#         18
+  C:02CFH         LINE#         19
+  C:02DAH         LINE#         20
+  C:02E7H         LINE#         22
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/30/2020  14:55:42  PAGE 4
+
+
+  C:0306H         LINE#         23
+  C:0319H         LINE#         25
+  C:033CH         LINE#         26
+  C:0342H         LINE#         28
+  C:0345H         LINE#         29
+  C:0348H         LINE#         30
+  -------         ENDPROC       _PWM_INIT
+  -------         PROC          PWM_START
+  C:0003H         LINE#         32
+  C:0003H         LINE#         33
+  C:0003H         LINE#         34
+  C:0005H         LINE#         35
+  -------         ENDPROC       PWM_START
+  -------         PROC          PWM_END
+  C:0006H         LINE#         37
+  C:0006H         LINE#         38
+  C:0006H         LINE#         39
+  C:0008H         LINE#         40
+  -------         ENDPROC       PWM_END
+  -------         PROC          _PWM_SET_DUTY
+  D:0017H         SYMBOL        duty
+  C:0218H         LINE#         43
+  C:021AH         LINE#         44
+  C:021AH         LINE#         45
+  C:021EH         LINE#         46
+  C:021EH         LINE#         47
+  C:0220H         LINE#         48
+  C:0222H         LINE#         49
+  C:0223H         LINE#         50
+  C:0228H         LINE#         51
+  C:0228H         LINE#         52
+  C:022AH         LINE#         53
+  C:022CH         LINE#         54
+  C:022DH         LINE#         56
+  C:022DH         LINE#         57
+  C:0254H         LINE#         58
+  C:0261H         LINE#         60
+  C:0280H         LINE#         61
+  C:0293H         LINE#         63
+  C:02B6H         LINE#         64
+  C:02BCH         LINE#         66
+  C:02BEH         LINE#         67
+  C:02BEH         LINE#         68
+  -------         ENDPROC       _PWM_SET_DUTY
+  -------         PROC          TIMEROVERFLOW
+  C:03B7H         LINE#         70
+  C:03B7H         LINE#         72
+  C:03B9H         LINE#         73
+  C:03BCH         LINE#         74
+  C:03BCH         LINE#         75
+  C:03BFH         LINE#         76
+  C:03C2H         LINE#         77
+  C:03C3H         LINE#         79
+  C:03C3H         LINE#         80
+  C:03C6H         LINE#         81
+  C:03C9H         LINE#         82
+  C:03C9H         LINE#         83
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/30/2020  14:55:42  PAGE 5
+
+
+  -------         ENDPROC       TIMEROVERFLOW
+  -------         ENDMOD        PWM
+
+  -------         MODULE        ?C?SIDIV
+  C:000EH         PUBLIC        ?C?SIDIV
+  -------         ENDMOD        ?C?SIDIV
+
+  -------         MODULE        ?C?IILDPTR
+  C:0044H         PUBLIC        ?C?IILDPTR
+  -------         ENDMOD        ?C?IILDPTR
+
+  -------         MODULE        ?C?LMUL
+  C:007CH         PUBLIC        ?C?LMUL
+  -------         ENDMOD        ?C?LMUL
+
+  -------         MODULE        ?C?ULDIV
+  C:0107H         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+  -------         MODULE        ?C?SLSHR
+  C:0199H         PUBLIC        ?C?SLSHR
+  -------         ENDMOD        ?C?SLSHR
+
+  -------         MODULE        ?C?UIDIV
+  C:01ADH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+  -------         MODULE        ?C?IILDX
+  C:0202H         PUBLIC        ?C?IILDX
+  -------         ENDMOD        ?C?IILDX
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?DELAY
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PWM_END?PWM
+
+Program Size: data=25.0 xdata=0 code=980
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

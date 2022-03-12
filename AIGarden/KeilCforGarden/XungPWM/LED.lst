@@ -1,0 +1,94 @@
+C51 COMPILER V9.01   LED                                                                   05/27/2020 11:19:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN .\LED.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Lib\LED.c BROWSE DEBUG OBJECTEXTEND PRINT(.\LED.lst) OBJECT(.\LED.obj
+                    -)
+
+line level    source
+
+   1          
+   2          //sbit RS = P2^0;
+   3          //sbit EN  = P2^1;
+   4          //#define DATA P3
+   5          
+   6          void Lcd_cmd (char cmd) //Khai bao nhap du lieu
+   7          {
+   8   1              RS=0;
+*** ERROR C202 IN LINE 8 OF ..\LIB\LED.C: 'RS': undefined identifier
+   9   1              DATA = cmd;
+*** ERROR C202 IN LINE 9 OF ..\LIB\LED.C: 'DATA': undefined identifier
+  10   1              EN=0;
+*** ERROR C202 IN LINE 10 OF ..\LIB\LED.C: 'EN': undefined identifier
+  11   1              EN=1;
+*** ERROR C202 IN LINE 11 OF ..\LIB\LED.C: 'EN': undefined identifier
+  12   1              if(cmd<=0x02)
+  13   1              {
+  14   2                      delay(2);
+  15   2              }
+  16   1              else
+  17   1              {
+  18   2                      delay(1);
+  19   2              }
+  20   1      }
+  21          
+  22          void Lcd_Chr_Cp (char c) //Hien thi ki tu
+  23          {
+  24   1              RS=1;
+  25   1              DATA = c;
+  26   1              EN=0;
+  27   1              EN=1;
+  28   1              delay(1);
+  29   1      }
+  30          
+  31          void Lcd_Chr( char row, char col, char c)
+  32          {
+  33   1              char cmd;
+  34   1              
+  35   1              cmd = (row == (1?0x80 : 0xC0) + col - 1);//Di chuyen con tro den vi tri can thiet
+  36   1              Lcd_cmd(cmd);
+  37   1              
+  38   1              Lcd_Chr_Cp(c); //Xuat ki tu     
+  39   1      }
+  40          
+  41          
+  42          void Lcd_Out_Cp (char *str)     //Hien thi chuoi ki tu
+  43          {
+  44   1              char i=0;
+  45   1              while (str[i]!=0)
+  46   1              {
+  47   2                      Lcd_Chr_Cp(str[i]);
+  48   2                      i++;
+  49   2              }
+  50   1      }
+C51 COMPILER V9.01   LED                                                                   05/27/2020 11:19:20 PAGE 2   
+
+  51          
+  52          void Lcd_Out( char row, char col, char *str)
+  53          {
+  54   1              char cmd;
+  55   1              
+  56   1              cmd = (row == 1?0x80 : 0xC0 + col - 1);//Di chuyen con tro den vi tri can thiet
+  57   1              Lcd_cmd(cmd);
+  58   1              
+  59   1              Lcd_Out_Cp(str);        
+  60   1      }
+  61          
+  62          
+  63          void Lcd_Init() // Khoi tao LCD 8 bit, 2 dong
+  64          {       
+  65   1              Lcd_cmd(0x30);
+  66   1              delay(5);
+  67   1              Lcd_cmd(0x30);
+  68   1              delay(1);
+  69   1              Lcd_cmd(0x30); //3 cai dau gui 0x3... may cung dc
+  70   1                                                                                      
+  71   1              Lcd_cmd(0x38);//Tao 2 dong, fond 5x8
+  72   1      
+  73   1              Lcd_cmd(0x00); //Xoa du lieu hien thi cu
+  74   1      
+  75   1              Lcd_cmd(0x0C);//Bat hien thi, tat con tro
+  76   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  4 ERROR(S)

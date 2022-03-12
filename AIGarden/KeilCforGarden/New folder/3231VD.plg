@@ -1,0 +1,28 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\OneDrive\OneDrive - Hanoi University of Science and Technology\BackUp\ProjectDevzone\AIGarden\KeilCforGarden\New folder\3231VD.uvproj
+Project File Date:  09/26/2020
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+main.c(2): warning C318: can't open file '../LibTest/lcd.h'
+main.c(3): warning C318: can't open file '../LibTest/ds1307.h'
+main.c(4): warning C318: can't open file '../LibTest/i2c.h'
+main.c(5): warning C318: can't open file '../LibTest/delay.h'
+MAIN.C(13): warning C206: 'lcd_Init': missing function-prototype
+MAIN.C(16): warning C206: 'ds1307_Init': missing function-prototype
+MAIN.C(20): warning C206: 'ds1307_SetTime': missing function-prototype
+MAIN.C(20): error C267: 'ds1307_SetTime': requires ANSI-style prototype
+compiling delay.c...
+..\LibTest\delay.c(1): error C318: can't open file '..\LibTest\delay.c'
+compiling ds1307.c...
+..\LibTest\ds1307.c(1): error C318: can't open file '..\LibTest\ds1307.c'
+compiling i2c.c...
+..\LibTest\i2c.c(1): error C318: can't open file '..\LibTest\i2c.c'
+compiling lcd.c...
+..\LibTest\lcd.c(1): error C318: can't open file '..\LibTest\lcd.c'
+Target not created

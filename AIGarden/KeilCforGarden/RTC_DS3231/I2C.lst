@@ -1,0 +1,129 @@
+C51 COMPILER V9.52.0.0   I2C                                                               09/04/2020 22:49:04 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\I2C.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTT\I2C.c BROWSE DEBUG OBJECTEXTEND PRINT(.\I2C.lst) TABS(2) OBJECT(.\
+                    -I2C.obj)
+
+line level    source
+
+   1          #include"main.h"
+   2          #include"port.h"
+   3          #include"I2c.h"
+   4          #include "..\libTT\delay.h"
+   5          
+   6          bit I2c_Get_Ack();
+   7          void I2c_Ack();
+   8          void I2c_Nak();
+   9          
+  10          void I2c_Init() //Khoi tao I2C
+  11          {
+  12   1        I2C_SCL=1;
+  13   1        I2C_SDA=1;
+  14   1      }
+  15          
+  16          void I2c_Start() //Bat dau I2C
+  17          {
+  18   1        I2C_SCL = 1;
+  19   1        
+  20   1        I2C_SDA = 0;
+  21   1        
+  22   1        I2C_SCL = 0;
+  23   1      }
+  24          
+  25          bit I2c_Get_Ack() //Master nhan 
+  26          {
+  27   1        bit result;
+  28   1          I2C_SDA = 1;
+  29   1        
+  30   1          I2C_SCL = 1;
+  31   1        
+  32   1        result = I2C_SDA;
+  33   1          I2C_SCL = 0;
+  34   1        return result;
+  35   1      }
+  36          
+  37          bit I2c_Write(unsigned char dat) //Gui du lieu tu Master
+  38          {
+  39   1        unsigned char i;
+  40   1        for(i=0;i<8;i++)
+  41   1        {
+  42   2            I2C_SDA = (bit)(dat&0x80);  
+  43   2            I2C_SCL = 1;
+  44   2          
+  45   2          I2C_SCL = 0;
+  46   2            dat<<=1;
+  47   2        }
+  48   1        return(I2c_Get_Ack());
+  49   1      }
+  50          
+  51          void I2c_Ack() //Bao Ack tu Master
+  52          {
+  53   1        I2C_SDA = 0;
+  54   1        
+C51 COMPILER V9.52.0.0   I2C                                                               09/04/2020 22:49:04 PAGE 2   
+
+  55   1        I2C_SCL = 1;
+  56   1        
+  57   1          I2C_SCL = 0;
+  58   1      }
+  59          
+  60          void I2c_Nak() //Bao NAck tu Master
+  61          {
+  62   1          I2C_SDA = 1;
+  63   1        
+  64   1          I2C_SCL = 1;
+  65   1        
+  66   1          I2C_SCL = 0;
+  67   1      }
+  68          
+  69          unsigned char I2c_Read(bit ack) //Doc du lieu tu Master
+  70          {
+  71   1          unsigned char i, dat=0;
+  72   1          for(i=0;i<8;i++)
+  73   1        {
+  74   2            I2C_SDA = 1;
+  75   2          
+  76   2            I2C_SCL = 1;
+  77   2          
+  78   2            dat <<= 1;
+  79   2          if(I2C_SDA)
+  80   2          {
+  81   3            dat |= 0x01;
+  82   3          }
+  83   2          I2C_SCL = 0;
+  84   2          }
+  85   1        if(ack)
+  86   1        {
+  87   2          I2c_Ack();
+  88   2        }
+  89   1        else
+  90   1        {
+  91   2          I2c_Nak();
+  92   2        }
+  93   1          return dat;
+  94   1      }
+  95          
+  96          void I2c_Stop() // Dung I2C
+  97          {   
+  98   1        I2C_SDA = 0;
+  99   1        
+ 100   1        I2C_SCL = 1;
+ 101   1        
+ 102   1        I2C_SDA = 1;
+ 103   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    103    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

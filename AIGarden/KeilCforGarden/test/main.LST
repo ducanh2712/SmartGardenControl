@@ -1,0 +1,74 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              08/24/2020 17:39:09 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <reg51.h> 
+   2          #include "lcd.h"     
+   3          #include "ds1307.h" 
+   4          #include "i2c.h"
+   5          #include "delay.h"
+   6           
+   7          /* main program */
+   8          void main() 
+   9          {
+  10   1         unsigned char sec,min,hour,day,month,year;
+  11   1       
+  12   1        /* Initilize the lcd */
+  13   1          lcd_Init();
+  14   1       
+  15   1        /* Initilize the RTC(ds1307)*/
+  16   1          ds1307_Init();
+  17   1       
+  18   1       
+  19   1        /*set the time and Date only once */
+  20   1        ds1307_SetTime(0x23,0x59,0x30);  //  
+  21   1        ds1307_SetDate(0x31,0x12,0x19);  //  
+  22   1       
+  23   1        /* Display "time" on first line*/
+  24   1        lcd_DisplayString("Time: ");
+  25   1       
+  26   1         /* Display "date" on Second line*/
+  27   1        lcd_GoToLineTwo();
+  28   1        lcd_DisplayString("Date: ");
+  29   1       
+  30   1         /* Display the time and date continously */ 
+  31   1         while(1)
+  32   1          {
+  33   2           /* Read the Time from RTC(ds1307) */ 
+  34   2              ds1307_GetTime(&hour,&min,&sec);        
+  35   2       
+  36   2          /* Display the time on firstline 7th position*/
+  37   2       
+  38   2               lcd_GoToXY(0,6);      
+  39   2               lcd_DisplayRtcTime(hour,min,sec);
+  40   2       
+  41   2       
+  42   2            /* Read the Date from RTC(ds1307) */ 
+  43   2              ds1307_GetDate(&day,&month,&year);        
+  44   2       
+  45   2          /* Display the Date on secondline 7th position*/
+  46   2               lcd_GoToXY(1,6);      
+  47   2               lcd_DisplayRtcDate(day,month,year);
+  48   2           }
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.52.0.0   MAIN                                                              08/24/2020 17:39:09 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

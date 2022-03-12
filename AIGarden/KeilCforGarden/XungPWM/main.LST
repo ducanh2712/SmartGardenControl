@@ -1,0 +1,60 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              08/30/2020 14:55:41 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include"main.h"
+   2          #include "../libTT/delay.h"
+   3          #include "../libTT/PWM.h"
+   4          #include "port.h"
+   5          
+   6          
+   7          //ck (us)
+   8          
+   9          void Tang_Giam_Duty(int (*duty2)) //P2_5 =0 duty +10% P2_6=0 duty giam 10%
+  10            {
+  11   1            if(P1_4 == 0)
+  12   1            {
+  13   2                (*duty2)+=10;
+  14   2                while(P1_4 == 0);
+  15   2            }
+  16   1          if(P1_3 == 0)
+  17   1            {
+  18   2                (*duty2)-=10;
+  19   2                while(P1_3 == 0);
+  20   2            }
+  21   1      
+  22   1        }
+  23          void main()
+  24          {
+  25   1        unsigned int duty = 0;
+  26   1          int *p =  &duty;
+  27   1          //  uartMode1();
+  28   1        PWM_Init (1000); //T = 1000us = 1ms
+  29   1        PWM_Set_Duty(0);
+  30   1        PWM_Start();
+  31   1        duty = 50;
+  32   1        while(1)
+  33   1        {
+  34   2            Tang_Giam_Duty(p);//Bam nut thi %duty +- 10%
+  35   2            PWM_Set_Duty(duty);//set muc duty
+  36   2        }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     78    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

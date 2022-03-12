@@ -1,0 +1,7 @@
+"main.obj",
+".\delay.obj",
+".\ds1307.obj",
+".\i2c.obj",
+".\lcd.obj" 
+TO "3231VD" 
+RAMSIZE(256) 

@@ -1,0 +1,7 @@
+"main.obj",
+".\Delay.obj",
+".\I2C.obj",
+".\LCD8.obj",
+".\RTC_DS3231.obj" 
+TO "RTC DS3231" 
+RAMSIZE(256) 

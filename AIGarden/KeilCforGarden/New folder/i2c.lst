@@ -1,0 +1,13 @@
+C51 COMPILER V9.01   I2C                                                                   11/24/2020 20:22:05 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\i2c.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTest\i2c.c BROWSE DEBUG OBJECTEXTEND PRINT(.\i2c.lst) OBJECT(.\i2c.ob
+                    -j)
+
+line level    source
+
+*** ERROR C318 OF ..\LibTest\i2c.c: can't open file '..\LibTest\i2c.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

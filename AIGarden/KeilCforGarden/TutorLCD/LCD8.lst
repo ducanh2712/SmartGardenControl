@@ -1,0 +1,106 @@
+C51 COMPILER V9.52.0.0   LCD8                                                              08/29/2020 18:01:52 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LCD8
+OBJECT MODULE PLACED IN .\LCD8.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTT\LCD8.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND PRINT(.\LCD8.lst) TA
+                    -BS(2) OBJECT(.\LCD8.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "port.h"
+   3          #include"..\libTT\delay.h"
+   4          #include"..\libTT\LCD8.h"
+   5          
+   6          void Lcd_Cmd(unsigned char cmd) //Gui lenh LCD
+   7          {
+   8   1        LCD_RS = 0;
+   9   1        LCD_DATA = cmd;
+  10   1        LCD_EN = 0;
+  11   1        LCD_EN = 1;
+  12   1      
+  13   1        if(cmd<=0x02)
+  14   1        {
+  15   2          delay(2);
+  16   2        }
+  17   1        else
+  18   1        {
+  19   2          delay(1);
+  20   2        }
+  21   1      }
+  22          
+  23          void Lcd_Chr_Cp(char c)   // Xuat ra man hinh LCD ki tu tai vi tri con tro
+  24          {
+  25   1        LCD_RS = 1;
+  26   1        LCD_DATA = c;
+  27   1        LCD_EN = 0;
+  28   1        LCD_EN = 1;
+  29   1        delay(1);
+  30   1      }
+  31          
+  32          
+  33          void Lcd_Chr(unsigned char row, unsigned char col, char c) // Xuat ra man hinh LCD 1 ky tu, ngay tai vi tr
+             -i dong row, cot col
+  34          {
+  35   1        unsigned char cmd;
+  36   1      
+  37   1        // Di chuyen co tro den vi tri can thiet
+  38   1        cmd = (row==1?0x80:0xC0) + col - 1;
+  39   1        Lcd_Cmd(cmd);
+  40   1      
+  41   1        // Xuat ky tu
+  42   1        Lcd_Chr_Cp(c);
+  43   1      } 
+  44          
+  45          void Lcd_Out_Cp(char *str) // Xuat ra man hinh LCD chuoi ki tu dai vi tri con tro
+  46          {
+  47   1        unsigned char i = 0;
+  48   1        while(str[i]!=0)
+  49   1        {
+  50   2          Lcd_Chr_Cp(str[i]);
+  51   2          i++;
+  52   2        }
+  53   1      }
+C51 COMPILER V9.52.0.0   LCD8                                                              08/29/2020 18:01:52 PAGE 2   
+
+  54          
+  55          void Lcd_Out(unsigned char row, unsigned char col, char *str) // Xuat ra man hinh LCD chuoi ky tu, ngay ta
+             -i vi tri dong row, cot col
+  56          {
+  57   1        unsigned char cmd;
+  58   1      
+  59   1        // Di chuyen co tro den vi tri can thiet
+  60   1        cmd = (row==1?0x80:0xC0) + col - 1;
+  61   1        Lcd_Cmd(cmd);
+  62   1      
+  63   1        Lcd_Out_Cp(str);
+  64   1      }
+  65          
+  66          void Lcd_Init() //Khoi tao LCD 16x2 (2 dong 16 o)
+  67          {
+  68   1        Lcd_Cmd(0x30);
+  69   1        delay(5);
+  70   1        Lcd_Cmd(0x30);
+  71   1        delay(1);
+  72   1        Lcd_Cmd(0x30);
+  73   1      
+  74   1        Lcd_Cmd(0x38);    // So dong hien thi la 2, font 5x8
+  75   1      
+  76   1        Lcd_Cmd(0x01);    // Xoa noi dung hien thi
+  77   1        Lcd_Cmd(0x0C);      // Bat hien thi va tat con tro
+  78   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    174    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

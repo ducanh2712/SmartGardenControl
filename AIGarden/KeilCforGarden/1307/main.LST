@@ -1,0 +1,511 @@
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2           
+   3          sbit SCL=P0^0;      //SCL Connected to P0.0
+*** ERROR C202 IN LINE 3 OF MAIN.C: 'P0': undefined identifier
+   4          sbit SDA=P0^1;      //SDA Connected to P0.1
+*** ERROR C202 IN LINE 4 OF MAIN.C: 'P0': undefined identifier
+   5           
+   6           
+   7          void delay_us(unsigned int us_count)
+   8           {  
+   9   1          while(us_count!=0)
+  10   1            {
+  11   2               us_count--;
+  12   2             }
+  13   1         }
+  14           
+  15          void i2c_Clock(void)
+  16          {
+  17   1          delay_us(50);
+  18   1          SCL = 1;        
+*** ERROR C202 IN LINE 18 OF MAIN.C: 'SCL': undefined identifier
+  19   1       
+  20   1          delay_us(50);        
+  21   1          SCL = 0;        
+*** ERROR C202 IN LINE 21 OF MAIN.C: 'SCL': undefined identifier
+  22   1      }
+  23           
+  24            
+  25          void i2c_Start()
+  26          {
+  27   1          SCL = 0;        // pull SCL low
+*** ERROR C202 IN LINE 27 OF MAIN.C: 'SCL': undefined identifier
+  28   1       
+  29   1          SDA = 1;        // pull SDA High
+*** ERROR C202 IN LINE 29 OF MAIN.C: 'SDA': undefined identifier
+  30   1          delay_us(50);
+  31   1       
+  32   1          SCL = 1;        //pull SCL high
+*** ERROR C202 IN LINE 32 OF MAIN.C: 'SCL': undefined identifier
+  33   1          delay_us(50);
+  34   1       
+  35   1          SDA = 0;        //Now pull SDA LOW, to generate the Start Condition
+*** ERROR C202 IN LINE 35 OF MAIN.C: 'SDA': undefined identifier
+  36   1          delay_us(50);
+  37   1       
+  38   1          SCL = 0;        //Finally Clear the SCL to complete the cycle
+*** ERROR C202 IN LINE 38 OF MAIN.C: 'SCL': undefined identifier
+  39   1      }
+  40          
+  41           
+  42          void i2c_Stop(void)
+  43          {
+  44   1          SCL = 0;            // pull SCL low
+*** ERROR C202 IN LINE 44 OF MAIN.C: 'SCL': undefined identifier
+  45   1          delay_us(50);
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 2   
+
+  46   1       
+  47   1          SDA = 0;            // pull SDA  low
+*** ERROR C202 IN LINE 47 OF MAIN.C: 'SDA': undefined identifier
+  48   1          delay_us(50);
+  49   1       
+  50   1          SCL = 1;            // pull SCL High
+*** ERROR C202 IN LINE 50 OF MAIN.C: 'SCL': undefined identifier
+  51   1          delay_us(50);
+  52   1       
+  53   1          SDA = 1;            // Now pull SDA High, to generate the Stop Condition
+*** ERROR C202 IN LINE 53 OF MAIN.C: 'SDA': undefined identifier
+  54   1      }
+  55          
+  56          void i2c_Write(unsigned char dat)
+  57          {
+  58   1          unsigned char i;
+  59   1       
+  60   1          for(i=0;i<8;i++)         
+  61   1           {
+  62   2              SDA = dat & 0x80;    
+*** ERROR C202 IN LINE 62 OF MAIN.C: 'SDA': undefined identifier
+  63   2              i2c_Clock();         
+  64   2              dat = dat<<1;
+  65   2            }
+  66   1              SDA = 1;                 
+*** ERROR C202 IN LINE 66 OF MAIN.C: 'SDA': undefined identifier
+  67   1      }
+  68          
+  69          unsigned char i2c_Read(void)
+  70          {
+  71   1          unsigned char i, dat=0x00;
+  72   1       
+  73   1             SDA=1;               
+*** ERROR C202 IN LINE 73 OF MAIN.C: 'SDA': undefined identifier
+  74   1          for(i=0;i<8;i++)       
+  75   1           {
+  76   2             delay_us(50);
+  77   2              SCL = 1;           
+*** ERROR C202 IN LINE 77 OF MAIN.C: 'SCL': undefined identifier
+  78   2              delay_us(50);
+  79   2       
+  80   2              dat = dat<<1;       
+  81   2              dat = dat | SDA;    
+*** ERROR C202 IN LINE 81 OF MAIN.C: 'SDA': undefined identifier
+  82   2       
+  83   2              SCL = 0;            
+*** ERROR C202 IN LINE 83 OF MAIN.C: 'SCL': undefined identifier
+  84   2             }
+  85   1         return dat;             
+  86   1      }
+  87          
+  88          void i2c_Ack()
+  89          {
+  90   1          SDA = 0;        
+*** ERROR C202 IN LINE 90 OF MAIN.C: 'SDA': undefined identifier
+  91   1          i2c_Clock();    
+  92   1          SDA = 1;        
+*** ERROR C202 IN LINE 92 OF MAIN.C: 'SDA': undefined identifier
+  93   1      }
+  94          
+  95          void i2c_NoAck()
+  96          {
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 3   
+
+  97   1          SDA = 1;        
+*** ERROR C202 IN LINE 97 OF MAIN.C: 'SDA': undefined identifier
+  98   1         i2c_Clock();     
+  99   1          SCL = 1;     
+*** ERROR C202 IN LINE 99 OF MAIN.C: 'SCL': undefined identifier
+ 100   1      }
+ 101          
+ 102           
+ 103          #define dataport P2       // LCD dataport connected to PORT1
+ 104           
+ 105          sbit rs= dataport^0;      // Register select pin connected to P1.0
+*** ERROR C202 IN LINE 105 OF MAIN.C: 'P2': undefined identifier
+ 106          sbit rw= dataport^1;      // Read Write pin connected to P1.1
+*** ERROR C202 IN LINE 106 OF MAIN.C: 'P2': undefined identifier
+ 107          sbit en= dataport^2;      // Enable pin connected to P1.2
+*** ERROR C202 IN LINE 107 OF MAIN.C: 'P2': undefined identifier
+ 108           
+ 109           
+ 110           
+ 111          /* 16x2 lcd Specification */
+ 112          #define LCDMaxLines 2
+ 113          #define LCDMaxChars 16
+ 114          #define LineOne 0x80
+ 115          #define LineTwo 0xc0
+ 116           
+ 117          #define BlankSpace ' '
+ 118           
+ 119           
+ 120           
+ 121           
+ 122           
+ 123           
+ 124           
+ 125          //LCD initilization
+ 126          void LCD_Init()
+ 127          {
+ 128   1          delay_us(5000);
+ 129   1         lcd_WriteCmd(0x02);  //initilize the LCD in 4bit Mode
+ 130   1         lcd_WriteCmd(0x28);
+ 131   1         lcd_WriteCmd(0x0C);  // display ON cursor ON
+ 132   1         lcd_WriteCmd(0x01);  // clear the LCD
+ 133   1         lcd_WriteCmd(0x80);  // move the Cursor to First line First Position
+ 134   1       
+ 135   1      }
+ 136           
+ 137           
+ 138          // lcd Write command function
+ 139          void lcd_WriteCmd( char a)
+ 140          {
+ 141   1       
+ 142   1         dataport=(a & 0xf0);        
+ 143   1         rs=0;                      
+ 144   1         rw=0;                 
+ 145   1               en=1;                 
+ 146   1         delay_us(1);
+ 147   1         en=0;
+ 148   1         delay_us(1);                  
+ 149   1         dataport=((a<<4) & 0xf0);   
+ 150   1         rs=0;                    
+ 151   1         rw=0;                    
+ 152   1         en=1;                      
+ 153   1         delay_us(1);
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 4   
+
+ 154   1         en=0;
+ 155   1         delay_us(1);
+ 156   1      }
+ 157           
+ 158           
+ 159           // lcd writedata function
+ 160          void lcd_Writedata( char a)
+ 161          {
+ 162   1       
+ 163   1       
+ 164   1         dataport=(a & 0xf0);        
+ 165   1           rs=1;                      
+ 166   1           rw=0;                      
+ 167   1           en=1;                      
+ 168   1          delay_us(1);
+ 169   1           en=0;
+ 170   1       
+ 171   1         delay_us(1);                
+ 172   1       
+ 173   1         dataport=((a <<4) & 0xf0);  
+ 174   1           rs=1;                    
+ 175   1           rw=0;                     
+ 176   1           en=1;                      
+ 177   1          delay_us(1);
+ 178   1           en=0;
+ 179   1       
+ 180   1         delay_us(1);
+ 181   1       
+ 182   1      }
+ 183          
+ 184           
+ 185           //lcd gotolinetwo fuction
+ 186          void lcd_GoToLineTwo()
+ 187          {
+ 188   1         lcd_WriteCmd(LineTwo);   // move the Cursor to Second line First Position
+ 189   1      }
+ 190           
+ 191           
+ 192           
+ 193          //lcd go to X(first row), Y(second row) line
+ 194          void lcd_GoToXY(char row, char col)
+ 195          {
+ 196   1         char pos;
+ 197   1       
+ 198   1          if(row<LCDMaxLines)
+ 199   1            {
+ 200   2               pos= LineOne | (row << 6);
+ 201   2                                          
+ 202   2       
+ 203   2              if(col<LCDMaxChars)
+ 204   2                 pos= pos+col;            
+ 205   2                                          
+ 206   2       
+ 207   2               lcd_WriteCmd(pos);        
+ 208   2             }
+ 209   1      }
+ 210           
+ 211          
+ 212          //lcd display string function
+ 213          void lcd_DisplayString(char *string_ptr)
+ 214          {
+ 215   1         while(*string_ptr)
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 5   
+
+ 216   1          lcd_Writedata(*string_ptr++);
+ 217   1          }
+ 218           
+ 219           
+ 220          //lcd display rtc time function
+ 221          void lcd_DisplayRtcTime(char hour,char min,char sec)
+ 222          {
+ 223   1          lcd_Writedata(((hour>>4) & 0x0f) + 0x30);
+ 224   1          lcd_Writedata((hour & 0x0f) + 0x30);
+ 225   1          lcd_Writedata(':');
+ 226   1       
+ 227   1          lcd_Writedata(((min>>4) & 0x0f) + 0x30);
+ 228   1          lcd_Writedata((min & 0x0f) + 0x30);
+ 229   1          lcd_Writedata(':');
+ 230   1       
+ 231   1          lcd_Writedata(((sec>>4) & 0x0f) + 0x30);
+ 232   1          lcd_Writedata((sec & 0x0f) + 0x30);
+ 233   1       
+ 234   1       }
+ 235           
+ 236           
+ 237           // lcd display rtc date function
+ 238          void lcd_DisplayRtcDate(char day,char month,char year)
+ 239           {
+ 240   1           lcd_Writedata(((day>>4) & 0x0f) + 0x30);
+ 241   1           lcd_Writedata((day & 0x0f) + 0x30);
+ 242   1           lcd_Writedata('/');
+ 243   1       
+ 244   1           lcd_Writedata(((month>>4) & 0x0f) + 0x30);
+ 245   1           lcd_Writedata((month & 0x0f) + 0x30);
+ 246   1           lcd_Writedata('/');
+ 247   1       
+ 248   1           lcd_Writedata(((year>>4) & 0x0f) + 0x30);
+ 249   1           lcd_Writedata((year & 0x0f) + 0x30);
+ 250   1       
+ 251   1       }
+ 252          
+ 253           Skip to content
+ 254          Why GitHub? 
+ 255          Team
+ 256          Enterprise
+ 257          Explore 
+ 258          Marketplace
+ 259          Pricing 
+ 260          Search
+ 261          
+ 262          Sign in
+ 263          Sign up
+ 264          Embedotronics
+ 265          /
+ 266          8051-microcontroller-interfacing-with-DS1307-Real-Time-Clock
+ 267          000
+ 268          Code
+ 269          Issues
+ 270          Pull requests
+ 271          Actions
+ 272          Projects
+ 273          Security
+ 274          Insights
+ 275          Join GitHub today
+ 276          GitHub is home to over 50 million developers working together to host and review code, manage projects, an
+             -d build software together.
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 6   
+
+ 277          
+ 278          8051-microcontroller-interfacing-with-DS1307-Real-Time-Clock/ds1307.c
+ 279          @Embedotronics
+ 280          Embedotronics Add files via upload
+ 281          Latest commit d32b034 on 2 Apr
+ 282           History
+ 283           1 contributor
+ 284          118 lines (76 sloc)  2.79 KB
+ 285            
+ 286          
+ 287          #include<reg51.h> 
+ 288          #include "ds1307.h"
+*** WARNING C318 IN LINE 288 OF main.c: can't open file 'ds1307.h'
+ 289          #include "i2c.h"
+*** WARNING C318 IN LINE 289 OF main.c: can't open file 'i2c.h'
+ 290          #include "delay.h"
+*** WARNING C318 IN LINE 290 OF main.c: can't open file 'delay.h'
+ 291           
+ 292           
+ 293           
+ 294          /* Below given values are fixed and should not be changed.
+ 295              Refer Ds1307 DataSheet for more info*/
+ 296           
+ 297          #define DS1307_ID 0xD0     // ds1307 ID
+ 298           
+ 299          #define SEC_ADDRESS   0x00 // address to access ds1307 SEC register
+ 300          #define DATE_ADDRESS  0x04 // address to access ds1307 DATE register
+ 301          #define control       0x07 // address to access ds1307 CONTROL register
+ 302           
+ 303           
+ 304           
+ 305           
+ 306           
+ 307           
+ 308          //ds1307 initilization
+ 309          void ds1307_Init()
+ 310          {
+ 311              i2c_Start();            // Start i2c communication
+ 312           
+ 313              ds1307_Write(DS1307_ID);   
+ 314             ds1307_Write(control);    
+ 315           
+ 316              ds1307_Write(0x00);        
+ 317           
+ 318              i2c_Stop();             
+ 319           
+ 320           }
+ 321           
+ 322          
+ 323          void ds1307_Write(unsigned char dat)
+ 324          {
+ 325              i2c_Write(dat);   
+ 326              i2c_Clock();
+ 327           }
+ 328           
+ 329          
+ 330          unsigned char ds1307_Read()
+ 331          {
+ 332              unsigned char dat;
+ 333              dat = i2c_Read();   
+ 334              return(dat);
+ 335           }
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 7   
+
+ 336          
+ 337          void ds1307_SetTime(unsigned char hh, unsigned char mm, unsigned char ss)
+ 338          {
+ 339              i2c_Start();            // Start i2c communication
+ 340           
+ 341              ds1307_Write(DS1307_ID);    
+ 342              ds1307_Write(SEC_ADDRESS);
+ 343              ds1307_Write(ss);           
+ 344              ds1307_Write(mm);           
+ 345              ds1307_Write(hh);           
+ 346           
+ 347              i2c_Stop();             // Stop i2c communication after Setting the Time
+ 348          }
+ 349          
+ 350          void ds1307_SetDate(unsigned char dd, unsigned char mm, unsigned char yy)
+ 351          {
+ 352              i2c_Start();            // Start i2c communication
+ 353           
+ 354              ds1307_Write(DS1307_ID);    
+ 355              ds1307_Write(DATE_ADDRESS);     
+ 356           
+ 357              ds1307_Write(dd);           
+ 358              ds1307_Write(mm);           
+ 359              ds1307_Write(yy);           
+ 360           
+ 361              i2c_Stop();             // Stop i2c communication after Setting the Date
+ 362          }
+ 363          
+ 364          void ds1307_GetTime(unsigned char *h_ptr,unsigned char *m_ptr,unsigned char *s_ptr)
+ 365          {
+ 366               i2c_Start();           // Start i2c communication
+ 367           
+ 368              ds1307_Write(DS1307_ID);    
+ 369              ds1307_Write(SEC_ADDRESS);          
+ 370           
+ 371               i2c_Stop();            
+ 372           
+ 373              i2c_Start();               
+ 374              ds1307_Write(0xD1);         
+ 375                                         
+ 376           
+ 377            *s_ptr = ds1307_Read();  i2c_Ack();     
+ 378            *m_ptr = ds1307_Read();  i2c_Ack();     
+ 379            *h_ptr = ds1307_Read();  i2c_NoAck();   
+ 380           
+ 381            i2c_Stop();               // stop i2c communication after reading the Time
+ 382           }
+ 383           
+ 384          void ds1307_GetDate(unsigned char *d_ptr,unsigned char *m_ptr,unsigned char *y_ptr)
+ 385          {
+ 386              i2c_Start();            // start i2c communication
+ 387           
+ 388              ds1307_Write(DS1307_ID);    
+ 389              ds1307_Write(DATE_ADDRESS);     
+ 390           
+ 391              i2c_Stop();             
+ 392           
+ 393           
+ 394             i2c_Start();             
+ 395             ds1307_Write(0xD1);          
+ 396                                      
+ 397           
+C51 COMPILER V9.01   MAIN                                                                  08/03/2020 10:17:49 PAGE 8   
+
+ 398            *d_ptr = ds1307_Read(); i2c_Ack();     
+ 399            *m_ptr = ds1307_Read(); i2c_Ack();     
+ 400            *y_ptr = ds1307_Read(); i2c_NoAck();   
+ 401           
+ 402            i2c_Stop();         // stop i2c communication after reading the Time
+ 403           }
+ 404          #include <reg51.h> 
+ 405          #include "lcd.h"         
+*** WARNING C318 IN LINE 405 OF main.c: can't open file 'lcd.h'
+ 406          #include "ds1307.h" 
+*** WARNING C318 IN LINE 406 OF main.c: can't open file 'ds1307.h'
+ 407          #include "i2c.h"
+*** WARNING C318 IN LINE 407 OF main.c: can't open file 'i2c.h'
+ 408          #include "delay.h"
+*** WARNING C318 IN LINE 408 OF main.c: can't open file 'delay.h'
+ 409           
+ 410          /* main program */
+ 411          void main() 
+ 412          {
+ 413             unsigned char sec,min,hour,day,month,year;
+ 414           
+ 415            /* Initilize the lcd */
+ 416              lcd_Init();
+ 417           
+ 418            /* Initilize the RTC(ds1307)*/
+ 419              ds1307_Init();
+ 420           
+ 421           
+ 422            /*set the time and Date only once */
+ 423            ds1307_SetTime(0x23,0x59,0x30);  //  
+ 424            ds1307_SetDate(0x31,0x12,0x19);  //  
+ 425           
+ 426            /* Display "time" on first line*/
+ 427            lcd_DisplayString("Time: ");
+ 428           
+ 429             /* Display "date" on Second line*/
+ 430            lcd_GoToLineTwo();
+ 431            lcd_DisplayString("Date: ");
+ 432           
+ 433             /* Display the time and date continously */ 
+ 434             while(1)
+ 435              {
+ 436                     /* Read the Time from RTC(ds1307) */ 
+ 437                  ds1307_GetTime(&hour,&min,&sec);        
+ 438           
+ 439                          /* Display the time on firstline 7th position*/
+ 440           
+ 441                   lcd_GoToXY(0,6);                
+ 442                   lcd_DisplayRtcTime(hour,min,sec);
+ 443           
+ 444           
+ 445                      /* Read the Date from RTC(ds1307) */ 
+ 446                  ds1307_GetDate(&day,&month,&year);        
+ 447           
+ 448                          /* Display the Date on secondline 7th position*/
+ 449                   lcd_GoToXY(1,6);                
+ 450                   lcd_DisplayRtcDate(day,month,year);
+ 451               }
+ 452          }
+
+C51 COMPILATION COMPLETE.  7 WARNING(S),  26 ERROR(S)

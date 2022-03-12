@@ -1,0 +1,119 @@
+C51 COMPILER V9.52.0.0   I2C                                                               08/24/2020 17:39:08 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN i2c.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE i2c.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "delay.h"
+   3          #include "i2c.h"
+   4           
+   5          sbit SCL=P0^0;      //SCL Connected to P0.0
+   6          sbit SDA=P0^1;      //SDA Connected to P0.1
+   7           
+   8           
+   9          void i2c_Clock(void)
+  10          {
+  11   1          delay_us(50);
+  12   1          SCL = 1;        
+  13   1       
+  14   1          delay_us(50);        
+  15   1          SCL = 0;        
+  16   1      }
+  17           
+  18            
+  19          void i2c_Start()
+  20          {
+  21   1          SCL = 0;        // pull SCL low
+  22   1       
+  23   1          SDA = 1;        // pull SDA High
+  24   1          delay_us(50);
+  25   1       
+  26   1          SCL = 1;        //pull SCL high
+  27   1          delay_us(50);
+  28   1       
+  29   1          SDA = 0;        //Now pull SDA LOW, to generate the Start Condition
+  30   1          delay_us(50);
+  31   1       
+  32   1          SCL = 0;        //Finally Clear the SCL to complete the cycle
+  33   1      }
+  34          
+  35           
+  36          void i2c_Stop(void)
+  37          {
+  38   1          SCL = 0;            // pull SCL low
+  39   1          delay_us(50);
+  40   1       
+  41   1          SDA = 0;            // pull SDA  low
+  42   1          delay_us(50);
+  43   1       
+  44   1          SCL = 1;            // pull SCL High
+  45   1          delay_us(50);
+  46   1       
+  47   1          SDA = 1;            // Now pull SDA High, to generate the Stop Condition
+  48   1      }
+  49          
+  50          void i2c_Write(unsigned char dat)
+  51          {
+  52   1          unsigned char i;
+  53   1       
+  54   1          for(i=0;i<8;i++)         
+  55   1           {
+C51 COMPILER V9.52.0.0   I2C                                                               08/24/2020 17:39:08 PAGE 2   
+
+  56   2              SDA = dat & 0x80;    
+  57   2              i2c_Clock();         
+  58   2              dat = dat<<1;
+  59   2            }
+  60   1              SDA = 1;                 
+  61   1      }
+  62          
+  63          unsigned char i2c_Read(void)
+  64          {
+  65   1          unsigned char i, dat=0x00;
+  66   1       
+  67   1             SDA=1;               
+  68   1          for(i=0;i<8;i++)       
+  69   1           {
+  70   2             delay_us(50);
+  71   2              SCL = 1;           
+  72   2              delay_us(50);
+  73   2       
+  74   2              dat = dat<<1;       
+  75   2              dat = dat | SDA;    
+  76   2       
+  77   2              SCL = 0;            
+  78   2             }
+  79   1         return dat;             
+  80   1      }
+  81          
+  82          void i2c_Ack()
+  83          {
+  84   1          SDA = 0;        
+  85   1          i2c_Clock();    
+  86   1          SDA = 1;        
+  87   1      }
+  88          
+  89          void i2c_NoAck()
+  90          {
+  91   1          SDA = 1;        
+  92   1         i2c_Clock();     
+  93   1          SCL = 1;     
+  94   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    177    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

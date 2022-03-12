@@ -1,0 +1,126 @@
+C51 COMPILER V9.52.0.0   LCD8                                                              09/04/2020 22:49:04 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LCD8
+OBJECT MODULE PLACED IN .\LCD8.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTT\LCD8.c BROWSE DEBUG OBJECTEXTEND PRINT(.\LCD8.lst) TABS(2) OBJECT(
+                    -.\LCD8.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "port.h"
+   3          #include"..\libTT\delay.h"
+   4          #include"..\libTT\LCD8.h"
+   5          
+   6          unsigned char Change_Bit( unsigned char n)
+   7          {
+   8   1        unsigned char tmp=0x00;
+   9   1        int i;
+  10   1        for(i=0;i<8;i++)
+  11   1        {
+  12   2          if ( (n & 0x01) == 1)
+  13   2            {
+  14   3              tmp = tmp <<1 | 0x01;
+  15   3              n = n >>1;
+  16   3            } 
+  17   2          else
+  18   2            {
+  19   3              tmp = tmp <<1 | 0x00;
+  20   3              n = n >>1;
+  21   3            }
+  22   2          }
+  23   1        return tmp;
+  24   1      }
+  25          
+  26          void Lcd_Cmd(unsigned char cmd) //Gui lenh LCD
+  27          {
+  28   1        LCD_RS = 0;
+  29   1        LCD_DATA = Change_Bit(cmd);
+  30   1        LCD_EN = 0;
+  31   1        LCD_EN = 1;
+  32   1      
+  33   1        if(cmd<=0x02)
+  34   1        {
+  35   2          delay(2);
+  36   2        }
+  37   1        else
+  38   1        {
+  39   2          delay(1);
+  40   2        }
+  41   1      }
+  42          
+  43          void Lcd_Chr_Cp(char c)   // Xuat ra man hinh LCD ki tu tai vi tri con tro
+  44          {
+  45   1        LCD_RS = 1;
+  46   1        LCD_DATA = Change_Bit(c);
+  47   1        LCD_EN = 0;
+  48   1        LCD_EN = 1;
+  49   1        delay(1);
+  50   1      }
+  51          
+  52          
+  53          void Lcd_Chr(unsigned char row, unsigned char col, char c) // Xuat ra man hinh LCD 1 ky tu, ngay tai vi tr
+             -i dong row, cot col
+C51 COMPILER V9.52.0.0   LCD8                                                              09/04/2020 22:49:04 PAGE 2   
+
+  54          {
+  55   1        unsigned char cmd;
+  56   1      
+  57   1        // Di chuyen co tro den vi tri can thiet
+  58   1        cmd = (row==1?0x80:0xC0) + col - 1;
+  59   1        Lcd_Cmd(cmd);
+  60   1      
+  61   1        // Xuat ky tu
+  62   1        Lcd_Chr_Cp(c);
+  63   1      } 
+  64          
+  65          void Lcd_Out_Cp(char *str) // Xuat ra man hinh LCD chuoi ki tu dai vi tri con tro
+  66          {
+  67   1        unsigned char i = 0;
+  68   1        while(str[i]!=0)
+  69   1        {
+  70   2          Lcd_Chr_Cp(str[i]);
+  71   2          i++;
+  72   2        }
+  73   1      }
+  74          
+  75          void Lcd_Out(unsigned char row, unsigned char col, char *str) // Xuat ra man hinh LCD chuoi ky tu, ngay ta
+             -i vi tri dong row, cot col
+  76          {
+  77   1        unsigned char cmd;
+  78   1      
+  79   1        // Di chuyen co tro den vi tri can thiet
+  80   1        cmd = (row==1?0x80:0xC0) + col - 1;
+  81   1        Lcd_Cmd(cmd);
+  82   1      
+  83   1        Lcd_Out_Cp(str);
+  84   1      }
+  85          
+  86          void Lcd_Init() //Khoi tao LCD 16x2 (2 dong 16 o)
+  87          {
+  88   1        Lcd_Cmd(0x30);
+  89   1        delay(5);
+  90   1        Lcd_Cmd(0x30);
+  91   1        delay(1);
+  92   1        Lcd_Cmd(0x30);
+  93   1      
+  94   1        Lcd_Cmd(0x38);    // So dong hien thi la 2, font 5x8
+  95   1      
+  96   1        Lcd_Cmd(0x01);    // Xoa noi dung hien thi
+  97   1        Lcd_Cmd(0x0C);      // Bat hien thi va tat con tro
+  98   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    219    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

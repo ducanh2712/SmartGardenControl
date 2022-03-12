@@ -1,0 +1,13 @@
+C51 COMPILER V9.01   DHT11                                                                 10/29/2020 09:40:27 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DHT11
+OBJECT MODULE PLACED IN .\DHT11.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\LibTT\DHT11.c BROWSE DEBUG OBJECTEXTEND PRINT(.\DHT11.lst) OBJECT(.\DHT1
+                    -1.obj)
+
+line level    source
+
+*** ERROR C318 OF ..\LibTT\DHT11.c: can't open file '..\LibTT\DHT11.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

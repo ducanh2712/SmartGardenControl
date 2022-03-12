@@ -1,0 +1,204 @@
+C51 COMPILER V9.01   MAIN                                                                  10/29/2020 09:42:10 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "stdio.h"
+   3          #include "string.h"
+   4          #include "port.h"
+   5          #include "..\libTT\delay.h"
+   6          #include "..\libTT\LCD8.h"
+   7          //#include "..\libTT\DHT11.h"
+   8          #include "..\libTT\I2C.h"
+   9          #include "..\libTT\RTC_DS3231.h"
+  10          
+  11          //////Khai bao ket noi button de doi mode
+  12          ////#define UP P1_1
+  13          ////#define DOWN P1_2
+  14          ////#define BUT P1_3 
+  15          
+  16          //////Khai bao ket noi LCD
+  17          ////#define LCD_RS  P0_7
+  18          ////#define LCD_EN  P0_6
+  19          ////#define LCD_DATA P2
+  20          
+  21          //////Khai bao ket noi I2C
+  22          ////#define I2C_SCL      P3_2
+  23          ////#define I2C_SDA      P3_3 
+  24          
+  25          ////Khai bao ket noi DHT11
+  26          // #define DHT11  P0_5
+  27          // #define P1_4 OK
+  28          
+  29          unsigned int set=0;
+  30          unsigned char Hour, Minute, Second, Mode, Day, Date, Month, Year, old_second, gio, phut, giay;
+  31          int I_RH,D_RH,I_Temp,D_Temp,CheckSum;
+  32          int i=0;
+  33          unsigned char dat[20];
+  34          
+  35          //char Num_Pad()
+  36          //{
+  37          //      int i,key,key1,key2
+  38          //      key1 = checkPad();
+  39          //      key2 = checkPad();
+  40          //      if(key2 == OK) return key1;
+  41          //      else    key = key1*10 + key2;
+  42          //      return key;
+  43          //}
+  44          
+  45          
+  46          
+  47          //void Write_Time_Onl( char Num_Pad())
+  48          //{
+  49          //      if(set==1)  Ds3231_Write_Time(Num_Pad(),Minute,Second,24,0);
+  50          //      else if(set==2)  Ds3231_Write_Time(Hour,Num_Pad(),Second,24,0);
+  51          //      else if(set==3)  Ds3231_Write_Date(Day,Num_Pad(),Month,Year);
+  52          //      else if(set==4)  Ds3231_Write_Date(Day,Date,Num_Pad(),Year);
+  53          //      else if(set==5)  Ds3231_Write_Date(Day,Date,Month,Num_Pad());
+  54          //}
+  55          
+C51 COMPILER V9.01   MAIN                                                                  10/29/2020 09:42:10 PAGE 2   
+
+  56          
+  57          //void Lcd_Time() //In man hinh gio/phut/giay
+  58          //{
+  59          //      Lcd_Chr(2,1,Hour/10+0x30);
+  60          //      Lcd_Chr_Cp(Hour%10+0x30);
+  61          //      Lcd_Chr_Cp(':');
+  62          //      Lcd_Chr_Cp(Minute/10+0x30);
+  63          //      Lcd_Chr_Cp(Minute%10+0x30);
+  64          //      Lcd_Chr_Cp(':');
+  65          //      Lcd_Chr_Cp(Second/10+0x30);
+  66          //      Lcd_Chr_Cp(Second%10+0x30);
+  67          //}
+  68          
+  69          //void Lcd_Day() // In man hinh ngay/thang/nam
+  70          //{
+  71          //      Lcd_Chr(2,9,Date/10+0x30);
+  72          //      Lcd_Chr_Cp(Date%10+0x30);
+  73          //      Lcd_Chr_Cp('/');
+  74          //      Lcd_Chr_Cp(Month/10+0x30);
+  75          //      Lcd_Chr_Cp(Month%10+0x30);
+  76          //      Lcd_Out_Cp("/");
+  77          //      Lcd_Chr_Cp(Year/10+0x30);
+  78          //      Lcd_Chr_Cp(Year%10+0x30);
+  79          //}
+  80          
+  81          //void SetTime() // Dieu chinh gio/phut/giay bang nut bam
+  82          //{
+  83          //      if(UP == 0)
+  84          //      {
+  85          //              if(set  == 1) { Hour++;if(Hour>=23)Hour=0;}
+  86          //              else if(set  == 2) { Minute++;if(Minute>=59)Minute=0;}
+  87          //              Ds3231_Write_Time(Hour,Minute,Second,24,0);
+  88          //      }
+  89          //      if(DOWN == 0)
+  90          //      {
+  91          //              if(set  == 1) { Hour--;if(Hour<=0)Hour=23;}
+  92          //              else if(set     == 2) { Minute--;if(Minute<=0)Minute=59;}
+  93          //              Ds3231_Write_Time(Hour,Minute,Second,24,0);
+  94          //      }
+  95          //}
+  96          
+  97          //void DHT11_LCD()
+  98          //{
+  99          //              Request();      
+ 100          //              Response();     
+ 101          //              
+ 102          //              I_RH=Receive_data();
+ 103          //              D_RH=Receive_data();    
+ 104          //              I_Temp=Receive_data();
+ 105          //              D_Temp=Receive_data();
+ 106          //              CheckSum=Receive_data();
+ 107          //
+ 108          //              if ((I_RH + D_RH + I_Temp + D_Temp) != CheckSum)
+ 109          //              {
+ 110          //                      Lcd_Out(0,0,"Error");
+ 111          //              }
+ 112          //              
+ 113          //              else
+ 114          //              {
+ 115          //                      sprintf(dat,"H=%d.%d",I_RH,D_RH);
+ 116          //                      Lcd_Out(1,1,dat);
+ 117          //                      sprintf(dat," T=%d.%d",I_Temp,D_Temp);   
+C51 COMPILER V9.01   MAIN                                                                  10/29/2020 09:42:10 PAGE 3   
+
+ 118          //                      Lcd_Out_Cp(dat);
+ 119          //                      Lcd_Chr_Cp(0xDF);
+ 120          //                      Lcd_Out_Cp("C");
+ 121          //                      memset(dat,0,20);
+ 122          //                      delay(500);
+ 123          //              }
+ 124          //}
+ 125          void DS3231_LCD()
+ 126          {
+ 127   1                                      Ds3231_Read_Time(&Hour, &Minute, &Second, &Mode);
+*** ERROR C208 IN LINE 127 OF MAIN.C: '_Ds3231_Read_Time': too many actual parameters
+ 128   1                              Ds3231_Read_Date(&Day, &Date, &Month, &Year);
+*** ERROR C208 IN LINE 128 OF MAIN.C: '_Ds3231_Read_Date': too many actual parameters
+ 129   1                              if(BUT == 0){set++;set%=4;}
+ 130   1                              if(set==1)
+ 131   1                              {
+ 132   2                                      Lcd_Out(2,1,"  ");
+ 133   2                                      for (i=0;i<50;i++)
+ 134   2                                      {
+ 135   3                                              if(BUT == 0){set++;set%=4;i=50;}
+ 136   3                                              SetTime();
+ 137   3                                              delay(10);
+ 138   3                                      }
+ 139   2                              }
+ 140   1                              else if (set==2)
+ 141   1                              {
+ 142   2                                      Lcd_Out(2,4,"  ");
+ 143   2                                      for (i=0;i<50;i++)
+ 144   2                                      {
+ 145   3                                              if(BUT == 0){set++;set%=4;i=50;}
+ 146   3                                              SetTime();
+ 147   3                                              delay(10);
+ 148   3                                      }
+ 149   2                              }
+ 150   1                              else if (set==3)        
+ 151   1                              {
+ 152   2                                      Lcd_Out(2,7     ,"  ");
+ 153   2                                      for (i=0;i<50;i++)
+ 154   2                                      {
+ 155   3                                              if(BUT == 0){set++;set%=4;i=50;}
+ 156   3                                              SetTime();
+ 157   3                                              delay(10);
+ 158   3                                      }
+ 159   2                              }
+ 160   1      }
+ 161          
+ 162          void main()
+ 163          {
+ 164   1      
+ 165   1              Lcd_Cmd(0x01);
+ 166   1              Lcd_Init();
+ 167   1              //      I2c_Init();
+ 168   1              //      Ds3231_Init();
+ 169   1              //Ds3231_Write_Time(8,59,30,24,0);
+ 170   1              //Ds3231_Write_Date(2,4,8,20);  
+ 171   1              while(1)
+ 172   1              {       
+ 173   2                              DHT11_LCD();
+ 174   2                              DS3231_LCD();
+ 175   2      //                      SetTime();
+ 176   2      //                      Lcd_Time();
+ 177   2      //                      Lcd_Day();
+C51 COMPILER V9.01   MAIN                                                                  10/29/2020 09:42:10 PAGE 4   
+
+ 178   2      //                      for (i=0;i<50;i++)
+ 179   2      //                      {
+ 180   2      //                                      if(BUT == 0){set++;set%=4;i=50;}
+ 181   2      //                                      delay(10);
+ 182   2      //                      }                       
+ 183   2      
+ 184   2              }
+ 185   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  2 ERROR(S)
